@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="https://cdn.staticfile.org/angular.js/1.4.6/angular.min.js"></script>
+</head>
+<body>
+
+<div ng-app="myApp" ng-controller="customersCtrl">
+  <p>名字 : <input type="text" ng-model="name"></p>
+  <table>
+    <tr ng-repeat="x in list">
+      <td>{{ x.Name }}</td>
+    </tr>
+  </table> 
+</div>
+
+<script>
+  var app = angular.module('myApp', []);
+  app.controller('customersCtrl', function($scope, $http) {
+      $http.get("/data")
+      .then(function (result) {
+          $scope.list = result.data.records;
+      });
+  });
+  </script>
+</body>
+</html>
