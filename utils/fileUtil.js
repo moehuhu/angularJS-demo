@@ -1,29 +1,29 @@
 var fs = require("fs");
 
 var path = "./data/";
-var fileName = "listdata.txt";
-
-
-var buf = new Buffer.alloc(1024);
+var fileName = "listdata.json";
 
 function FileOperations() {
-    var file = path + fileName;
-    console.log("File module loaded");
-    var data = [];
-    fs.open(file, "r+", function (err,fd) {
+  var file = path + fileName;
+  function writeJson(params) {
+    //现将json文件读出来
+    fs.readFile(file, function(err, data) {
+      if (err) {
+        return console.error(err);
+      }
+      var person = data.toString();
+      person = JSON.parse(person);
+      person.data.push(params); 
+      person.total = person.data.length;
+      console.log(person.data);
+      var str = JSON.stringify(person); //因为nodejs的写入文件只认识字符串或者二进制数，所以把json对象转换成字符串重新写入json文件中
+      fs.writeFile(file, str, function(err) {
         if (err) {
-            return console.error(err);
+          console.error(err);
         }
-        console.log("file loaded");
-        fs.read(fd, buf, 0, buf.length, 0,function (err,bytes) {
-            if (err){
-                console.log(err);
-            }
-            console.log(buf.slice(0, bytes).toString())
-            
-        })
+        console.log("Created");
+      });
     });
-    
-
+  }
 }
 module.exports = FileOperations;
