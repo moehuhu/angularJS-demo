@@ -14,7 +14,7 @@
   <table>
     <tr ng-repeat=" x in records">
         <td><button ng-click="remove($index)"">移除</button></td>
-      <td><button ng-click=" update($index)"">提交修改</button></td>
+      <td><button ng-click=" update($index,x.Text)"">提交修改</button></td>
         <td>{{$index}}</td>
         <td><input type="text" ng-model=x.Text></td>
 
@@ -39,8 +39,16 @@
           $scope.records.splice(index, 1)
         })
       }
-      $scope.update = function (index) {
+      $scope.update = function (index,item) {
         console.log(index)
+        console.log(item)
+        $http({
+          method: "POST",
+          url: "/update",
+          params: { Text: item,Index:index }
+        }).success(function () {
+          console.log("updated")
+        })
       }
       $scope.create = function (item) {
         console.log(item)

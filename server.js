@@ -31,9 +31,11 @@ app.post("/delete", function (request, response) {
     db.delete(request.query.Index)
     response.send("Deleted record at: "+request.query.Index)
 })
-app.get("/update", function (request, response) {
+app.post("/update", function (request, response) {
     console.log(request.query.Index)
     console.log(request.query.Text)
+    var newItem={Text:request.query.Text,id:0}
+    db.update(request.query.Index,newItem)
     response.sendFile(path.join(__dirname, '/') + fileName)
 })
 app.listen(8000, function () {

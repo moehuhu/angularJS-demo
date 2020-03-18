@@ -2,13 +2,14 @@ var fileUtil = require("./fileUtil")
 var fs = new fileUtil()
 function dbOperations() {
     console.log("db module loaded");
-    this.create = function (params) {
-        console.log("params")
-        fs.writeJson(params)
+    this.create = function (item) {
+        console.log(item)
+        fs.writeJson(item)
     }
-    this.update = function (params) {
-        console.log("params")
-        fs.writeJson(params)
+    this.update = function (index,item) {
+        console.log(index)
+        console.log(item)
+        fs.updateJson(index,item)
     }
     this.delete = function (index) {
         console.log("params")
