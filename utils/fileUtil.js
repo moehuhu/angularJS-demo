@@ -5,18 +5,19 @@ var fileName = "listdata.json";
 
 function FileOperations() {
   var file = path + fileName;
-  function writeJson(params) {
-    //现将json文件读出来
+  this.writeJson = function(params) {
     fs.readFile(file, function(err, data) {
       if (err) {
         return console.error(err);
       }
-      var person = data.toString();
-      person = JSON.parse(person);
-      person.data.push(params); 
-      person.total = person.data.length;
-      console.log(person.data);
-      var str = JSON.stringify(person); //因为nodejs的写入文件只认识字符串或者二进制数，所以把json对象转换成字符串重新写入json文件中
+      var listdata = data.toString();
+      listdata = JSON.parse(listdata);
+      params.index = listdata.total;
+      console.log(params + "in FileUtil");
+      listdata.records.push(params);
+      listdata.total = listdata.records.length;
+      console.log(listdata.records);
+      var str = JSON.stringify(listdata);
       fs.writeFile(file, str, function(err) {
         if (err) {
           console.error(err);
@@ -24,6 +25,24 @@ function FileOperations() {
         console.log("Created");
       });
     });
-  }
+  };
+  this.deleteJson = function(index) {
+    fs.readFile(file, function(err, data) {
+      if (err) {
+        return console.error(err);
+      }
+      var listdata = data.toString();
+      listdata = JSON.parse(listdata);
+      listdata.records.splice(index, 1);
+      console.log(listdata.records);
+      var str = JSON.stringify(listdata);
+      fs.writeFile(file, str, function(err) {
+        if (err) {
+          console.error(err);
+        }
+        console.log("Deleted");
+      });
+    });
+  };
 }
 module.exports = FileOperations;

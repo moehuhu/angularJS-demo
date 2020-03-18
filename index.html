@@ -31,7 +31,13 @@
         });
       $scope.remove = function (index) {
         console.log(index)
-        $scope.records.splice(index, 1)
+        $http({
+          method: "POST",
+          url: "/delete",
+          params: { Index: index }
+        }).success(function () {
+          $scope.records.splice(index, 1)
+        })
       }
       $scope.update = function (index) {
         console.log(index)
@@ -43,7 +49,7 @@
           url: "/create",
           params: { Text: item }
         }).success(function () {
-          $scope.records.push({ Text: item })
+          $scope.records.push({Text:item})
         })
 
       }

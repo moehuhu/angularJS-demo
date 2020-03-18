@@ -20,14 +20,20 @@ app.get("/", function (request, response) {
 app.get("/list", function (request, response) {
     response.sendFile(path.join(__dirname, '/') + fileName)
 })
-app.post("/create", function (req, res) {
-    console.log(req.query.Text)
-    db.getList
+app.post("/create", function (request, response) {
+    console.log(request.query.Text)
+    var newItem={Text:request.query.Text,id:0}
+    db.create(newItem)
+    response.send("Created new record: "+request.query.Text)
 })
-app.get("/delete", function (request, response) {
-    response.sendFile(path.join(__dirname, '/') + fileName)
+app.post("/delete", function (request, response) {
+    console.log(request.query.Index)
+    db.delete(request.query.Index)
+    response.send("Deleted record at: "+request.query.Index)
 })
 app.get("/update", function (request, response) {
+    console.log(request.query.Index)
+    console.log(request.query.Text)
     response.sendFile(path.join(__dirname, '/') + fileName)
 })
 app.listen(8000, function () {
