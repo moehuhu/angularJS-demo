@@ -10,6 +10,7 @@ var path = require('path');
 var fileName = "data/listdata.json";
 
 var page = "index.html"
+var script = "script.js"
 
 app.use(bodyParser.urlencoded({
     extended: true
@@ -17,26 +18,35 @@ app.use(bodyParser.urlencoded({
 app.get("/", function (request, response) {
     response.sendFile(path.join(__dirname, '/') + page)
 })
+
+app.get("/script.js", function (request, response) {
+    response.sendFile(path.join(__dirname, '/') + script)
+})
+
 app.get("/list", function (request, response) {
-    response.sendFile(path.join(__dirname, '/') + fileName)
+    db.getList().then(v => {
+        list = v.toString()
+    }).then(function () {
+        list = JSON.parse(list)
+    }).then(function(){
+        response.send(list)
+    }).catch(e=>{
+        console.error(e)
+    });
+
 })
 app.post("/create", function (request, response) {
-    console.log(request.query.Text)
-    var newItem={Text:request.query.Text,id:0}
+    var newItem = request.query
     db.create(newItem)
-    response.send("Created new record: "+request.query.Text)
+    response.send("Created new record: " + request.query)
 })
 app.post("/delete", function (request, response) {
-    console.log(request.query.Index)
-    db.delete(request.query.Index)
-    response.send("Deleted record at: "+request.query.Index)
+    db.delete(request.query)
+    response.send("Deleted record: " + request.query)
 })
 app.post("/update", function (request, response) {
-    console.log(request.query.Index)
-    console.log(request.query.Text)
-    var newItem={Text:request.query.Text,id:0}
-    db.update(request.query.Index,newItem)
-    response.sendFile(path.join(__dirname, '/') + fileName)
+    db.update(request.query)
+    response.send("Updated record: " + request.query)
 })
 app.listen(8000, function () {
     console.log("server is running...")
