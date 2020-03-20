@@ -1,6 +1,6 @@
 var app = angular.module("myApp", []);
 app.controller("customersCtrl", function($scope, $http) {
-  $http.get("/list").then(function(result) {
+  $http.get("/get").then(function(result) {
     $scope.records = result.data.records;
   });
   $scope.remove = function(item) {
@@ -10,7 +10,7 @@ app.controller("customersCtrl", function($scope, $http) {
       url: "/delete",
       params: item
     }).then(function() {
-      $http.get("/list").then(function(result) {
+      $http.get("/get").then(function(result) {
         $scope.records = result.data.records;
       });
     });
@@ -36,7 +36,7 @@ app.controller("customersCtrl", function($scope, $http) {
         $scope.item = "";
       })
       .then(function() {
-        $http.get("/list").then(function(result) {
+        $http.get("/get").then(function(result) {
           $scope.records = result.data.records;
         });
       });
