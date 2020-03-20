@@ -7,6 +7,7 @@ var path = require('path');
 
 var page = "./page/index.html"
 var script = "./page/script.js"
+var data="./data/listdata.json"
 
 app.use(bodyParser.urlencoded({
     extended: true
@@ -48,4 +49,5 @@ app.post("/update", function (request, response) {
 })
 app.listen(3000, function () {
     console.log("server is running...")
+    
 })
